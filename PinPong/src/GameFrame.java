@@ -7,8 +7,8 @@ public class GameFrame extends JFrame {
     private GamePanel panel;
     private DatabaseConnector databaseConnector;
     GameFrame() {
-        LoginFrame loginFrame = new LoginFrame(this); // Передаем владельца как текущий GameFrame
-        loginFrame.setVisible(true); // Отображаем диалоговое окно
+        LoginFrame loginFrame = new LoginFrame(this);
+        loginFrame.setVisible(true);
         if (loginFrame.isAuthenticated()) {
             panel = new GamePanel();
             this.add(panel);

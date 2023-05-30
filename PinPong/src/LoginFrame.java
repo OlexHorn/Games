@@ -11,7 +11,7 @@ public class LoginFrame extends JDialog {
     private boolean authenticated;
 
     public LoginFrame(Frame owner) {
-        super(owner, "Login", true); // Устанавливаем диалоговый режим
+        super(owner, "Login", true);
 
         databaseConnector = new DatabaseConnector();
         authenticated = false;
@@ -21,7 +21,7 @@ public class LoginFrame extends JDialog {
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(300, 150);
-        setLocationRelativeTo(null); // Центрируем диалоговое окно на экране
+        setLocationRelativeTo(null);
         setResizable(false);
     }
 
@@ -38,7 +38,7 @@ public class LoginFrame extends JDialog {
         add(usernameField);
         add(new JLabel("Password:"));
         add(passwordField);
-        add(new JLabel()); // Пустая метка для отступа
+        add(new JLabel());
         add(loginButton);
     }
 
@@ -57,7 +57,7 @@ public class LoginFrame extends JDialog {
                     JOptionPane.showMessageDialog(LoginFrame.this, "Invalid username or password");
                 }
 
-                dispose(); // Закрываем диалоговое окно после аутентификации
+                dispose();
             }
         });
     }
