@@ -6,6 +6,8 @@ public class DatabaseConnector {
     private String connectionString = "jdbc:sqlserver://DESKTOP-O55NP8M\\INTERGENSERVER;databaseName=Games;trustServerCertificate=true;";
     private Statement statement;
 
+    private int userID = 0;
+
     public DatabaseConnector() {
         try {
             DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
@@ -40,8 +42,68 @@ public class DatabaseConnector {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            this.userID = getUserIdByUsername(username);
         }
     }
+
+    public void saveScore(int score1, int score2) {
+        try {
+            String query = "SELECT COUNT(*) FROM Scores WHERE userID = ?";
+            PreparedStatement countStatement = connection.prepareStatement(query);
+            countStatement.setInt(1, this.userID);
+            ResultSet resultSet = countStatement.executeQuery();
+
+            resultSet.next();
+            int rowCount = resultSet.getInt(1);
+            System.out.println(rowCount);
+
+            if (rowCount > 0) {
+                query = "UPDATE Scores SET score1 = ?, score2 = ? WHERE userID = ?";
+                PreparedStatement updateStatement = connection.prepareStatement(query);
+                updateStatement.setInt(1, score1);
+                updateStatement.setInt(2, score2);
+                updateStatement.setInt(3, this.userID);
+                updateStatement.executeUpdate();
+            } else {
+                query = "INSERT INTO Scores (userID, score1, score2) VALUES (?, ?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(query);
+                insertStatement.setInt(1, this.userID);
+                insertStatement.setInt(2, score1);
+                insertStatement.setInt(3, score2);
+                insertStatement.executeUpdate();
+            }
+
+            JOptionPane.showMessageDialog(null, "Score saved successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+    public int getUserIdByUsername(String username) {
+        try {
+            String query = "SELECT id FROM Profiles WHERE username = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
 
     public void closeConnection() {
         try {

@@ -19,10 +19,14 @@ public class GamePanel extends JPanel implements Runnable {
     Ball ball;
     Score score;
 
-    GamePanel(){
+    DatabaseConnector databaseConnector;
+
+    GamePanel(DatabaseConnector databaseConnector) {
+        this.databaseConnector = databaseConnector;
+
         newPaddles();
         newBall();
-        score = new Score(GAME_WIDTH,GAME_HEIGHT);
+        score = new Score(GAME_WIDTH, GAME_HEIGHT, this);
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
@@ -30,6 +34,15 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
+    public void saveScore() {
+        int score1 = score.player1;
+        int score2 = score.player2;
+
+        databaseConnector.saveScore(score1, score2);
+    }
+
+
     public void newBall(){
         random = new Random();
         ball = new Ball((GAME_WIDTH/2)-(BALL_DIAMETER/2),random.nextInt(GAME_HEIGHT-BALL_DIAMETER), BALL_DIAMETER,BALL_DIAMETER);
@@ -43,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable {
         graphics = image.getGraphics();
         draw(graphics);
         g.drawImage(image,0,0,this);
+
     }
     public void draw(Graphics g){
         paddle1.draw(g);

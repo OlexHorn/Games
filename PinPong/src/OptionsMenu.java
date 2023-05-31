@@ -4,9 +4,11 @@ import java.awt.event.ActionListener;
 
 public class OptionsMenu extends JMenuBar {
     private DatabaseConnector databaseConnector;
+    private GamePanel panel;
 
-    OptionsMenu(DatabaseConnector connector) {
+    OptionsMenu(DatabaseConnector connector, GamePanel panel) {
         this.databaseConnector = connector;
+        this.panel = panel;
 
         JMenu optionsMenu = new JMenu("Options");
 
@@ -27,7 +29,15 @@ public class OptionsMenu extends JMenuBar {
             }
         });
 
+        JMenuItem saveScoreItem = new JMenuItem("Save score");
+        saveScoreItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                panel.saveScore();
+            }
+        });
+
         optionsMenu.add(createProfileItem);
+        optionsMenu.add(saveScoreItem);
         optionsMenu.add(exitItem);
 
         this.add(optionsMenu);

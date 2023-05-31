@@ -10,10 +10,10 @@ public class LoginFrame extends JDialog {
     private DatabaseConnector databaseConnector;
     private boolean authenticated;
 
-    public LoginFrame(Frame owner) {
+    public LoginFrame(Frame owner,DatabaseConnector databaseConnector) {
         super(owner, "Login", true);
 
-        databaseConnector = new DatabaseConnector();
+        this.databaseConnector = databaseConnector;
         authenticated = false;
         initializeComponents();
         setupLayout();
