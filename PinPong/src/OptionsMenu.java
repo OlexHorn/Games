@@ -36,6 +36,14 @@ public class OptionsMenu extends JMenuBar {
             }
         });
 
+        JMenuItem viewScoresItem = new JMenuItem("View Scores");
+        viewScoresItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                databaseConnector.viewScores();
+            }
+        });
+
+        optionsMenu.add(viewScoresItem);
         optionsMenu.add(createProfileItem);
         optionsMenu.add(saveScoreItem);
         optionsMenu.add(exitItem);

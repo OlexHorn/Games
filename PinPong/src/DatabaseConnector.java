@@ -31,6 +31,31 @@ public class DatabaseConnector {
         }
     }
 
+    public void viewScores() {
+        try {
+            String query = "SELECT Profiles.Username, Scores.score1, Scores.score2 FROM Scores INNER JOIN Profiles ON Scores.userID = Profiles.id";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            StringBuilder scores = new StringBuilder();
+            while (resultSet.next()) {
+                String username = resultSet.getString("Username");
+                int score1 = resultSet.getInt("score1");
+                int score2 = resultSet.getInt("score2");
+                scores.append("Username: ").append(username)
+                        .append(", Score 1: ").append(score1)
+                        .append(", Score 2: ").append(score2)
+                        .append("\n");
+            }
+
+            JOptionPane.showMessageDialog(null, scores.toString(), "Scores", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
     public boolean authenticate(String username, String password) {
         try {
             String query = "SELECT * FROM Profiles WHERE username = ? AND password = ?";
@@ -99,11 +124,6 @@ public class DatabaseConnector {
 
         return 0;
     }
-
-    public int getUserID() {
-        return userID;
-    }
-
 
     public void closeConnection() {
         try {
